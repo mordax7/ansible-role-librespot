@@ -1,0 +1,29 @@
+---
+
+- name: restart raspotify
+  service:
+    name: raspotify
+    state: restarted
+    daemon_reload: yes
+    enabled: yes
+  listen: restart raspotify
+
+- name: restart librespot-java
+  systemd:
+    name: librespot-java
+    state: restarted
+    daemon_reload: yes
+    enabled: yes
+  listen: restart librespot-java
+
+- name: restart librespot
+  systemd:
+    name: librespot
+    state: restarted
+    daemon_reload: yes
+    enabled: yes
+  listen: restart librespot
+
+- name: reboot host
+  reboot:
+  listen: reboot host

@@ -1,0 +1,6 @@
+---
+
+- src: geerlingguy.java
+  version: 1.9.6
+  name: geerlingguy.java
+  when: librespot_installation_type == "librespot-java"

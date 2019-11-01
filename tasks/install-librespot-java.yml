@@ -1,0 +1,277 @@
+---
+
+- name: check out librespot-java repository
+  git:
+    repo: https://github.com/librespot-org/librespot-java.git
+    dest: /tmp/librespot-java
+    version: master
+  become: yes
+  become_user: "{{ lookup('env','USER') }}"
+  delegate_to: 127.0.0.1
+
+- name: build librespot-java
+  shell: cd /tmp/librespot-java ; mvn clean package
+  become: yes
+  become_user: "{{ lookup('env','USER') }}"
+  delegate_to: 127.0.0.1
+
+- name: ensure group "librespot" exists
+  group:
+    name: librespot
+    state: present
+    system: yes
+
+- name: add the user "librespot"
+  user:
+    name: librespot
+    comment: "User for librespot"
+    groups: librespot,audio
+    system: yes
+    create_home: no
+
+- name: creates directory for librespot-java
+  file:
+    dest: /opt/librespot-java
+    state: directory
+    owner: librespot
+    group: librespot
+
+- name: copy librespot-java artifact
+  copy:
+    src={{ item.src }}
+    dest={{ item.dest }}
+    owner={{ item.owner }}
+    group={{ item.group }}
+    mode={{ item.mode }}
+  with_items:
+    - {src: "/tmp/librespot-java/core/target/librespot-core-jar-with-dependencies.jar",
+       dest: "/opt/librespot-java/librespot-core-jar-with-dependencies.jar",
+       owner: "librespot",
+       group: "librespot",
+       mode: "0664"}
+
+- name: copy service script
+  copy:
+    src={{ item.src }}
+    dest={{ item.dest }}
+    owner={{ item.owner }}
+    group={{ item.group }}
+    mode={{ item.mode }}
+  with_items:
+    - { src: "librespot-java/librespot-java.service",
+        dest: "/lib/systemd/system/librespot-java.service",
+        owner: "root",
+        group: "root",
+        mode: "0644"}
+  notify:
+    - restart librespot-java
+
+# need to restart the service to get the config created by the app
+- name: restart librespot-java
+  systemd:
+    name: librespot-java
+    state: restarted
+
+- name: wait until the file config.toml is present before continuing
+  wait_for:
+    path: /opt/librespot-java/config.toml
+
+- name: configure device name
+  replace:
+    dest: /opt/librespot-java/config.toml
+    regexp: '(?<=^deviceName\s=\s\")[A-z-]*'
+    replace: "{{ librespot_java_device_namn }}"
+  notify:
+    - restart librespot-java
+
+- name: configure device type
+  replace:
+    dest: /opt/librespot-java/config.toml
+    regexp: '(?<=^deviceType\s=\s\")[A-z]*'
+    replace: "{{ librespot_java_devicn }}"
+  notify:
+    - restart librespot-java
+
+- name: configure auth strategy
+  replace:
+    dest: /opt/librespot-java/config.toml
+    regexp: '(?<=^strategy\s=\s\")[A-z]*'
+    replace: "{{ librespot_java_auth_strategn }}"
+  notify:
+    - restart librespot-java
+
+- name: configure auth username
+  replace:
+    dest: /opt/librespot-java/config.toml
+    regexp: '(?<=^username\s=\s\")[A-z]*'
+    replace: "{{ librespot_java_auth_usernamn }}"
+  notify:
+    - restart librespot-java
+
+- name: configure auth password
+  replace:
+    dest: /opt/librespot-java/config.toml
+    regexp: '(?<=^password\s=\s\")[A-z]*'
+    replace: "{{ librespot_java_auth_usernamn }}"
+  notify:
+    - restart librespot-java
+
+- name: configure auth blob
+  replace:
+    dest: /opt/librespot-java/config.toml
+    regexp: '(?<=blob\s=\s\")[A-z]*'
+    replace: "{{ librespot_java_auth_blon }}"
+  notify:
+    - restart librespot-java
+
+- name: configure zeroconf port
+  replace:
+    dest: /opt/librespot-java/config.toml
+    regexp: '(?<=listenPort\s=\s)-?[0-9]*'
+    replace: "{{ librespot_java_zeroconf_porn }}"
+  notify:
+    - restart librespot-java
+
+- name: configure listener inerfaces allow
+  replace:
+    dest: /opt/librespot-java/config.toml
+    regexp: '(?<=listenAll\s=\s)[A-z]*'
+    replace: "{{ librespot_java_zeroconf_listen_aln }}"
+  notify:
+    - restart librespot-java
+
+- name: configure listener inerfaces
+  replace:
+    dest: /opt/librespot-java/config.toml
+    regexp: '(?<=interfaces\s=\s\")[A-z]*'
+    replace: "{{ librespot_java_zeroconf_interfacen }}"
+  notify:
+    - restart librespot-java
+
+- name: configure cache
+  replace:
+    dest: /opt/librespot-java/config.toml
+    regexp: '(?<=^enabled\s=\s)[A-z]*\s#\sCache\senabled'
+    replace: "{{ librespot_java_cache_enablen }}"
+  notify:
+    - restart librespot-java
+
+- name: configure cache dir
+  replace:
+    dest: /opt/librespot-java/config.toml
+    regexp: '(?<=dir\s=\s\")\.\/[A-z]*'
+    replace: "{{ librespot_java_cache_din }}"
+  notify:
+    - restart librespot-java
+
+- name: configure cache dir
+  replace:
+    dest: /opt/librespot-java/config.toml
+    regexp: '(?<=dir\s=\s\")\.\/[A-z]*'
+    replace: "{{ librespot_java_cache_din }}"
+  notify:
+    - restart librespot-java
+
+- name: configure cache do clea up
+  replace:
+    dest: /opt/librespot-java/config.toml
+    regexp: '(?<=doCleanUp\s=\s)[A-z]*'
+    replace: "{{ librespot_java_cache_do_clean_un }}"
+  notify:
+    - restart librespot-java
+
+- name: configure cache do clea up
+  replace:
+    dest: /opt/librespot-java/config.toml
+    regexp: '(?<=doCleanUp\s=\s)[A-z]*'
+    replace: "{{ librespot_java_cache_do_clean_un }}"
+  notify:
+    - restart librespot-java
+
+- name: configure preload
+  replace:
+    dest: /opt/librespot-java/config.toml
+    regexp: '(?<=^enabled\s=\s)[A-z]*\s#\sPreload\senabled'
+    replace: "{{ librespot_java_preload_enablen }}"
+  notify:
+    - restart librespot-java
+
+- name: configure player autoplay
+  replace:
+    dest: /opt/librespot-java/config.toml
+    regexp: '(?<=autoplayEnabled\s=\s)[A-z]*'
+    replace: "{{ librespot_java_player_autoplay_enablen }}"
+  notify:
+    - restart librespot-java
+
+- name: configure player perferrd audio quality
+  replace:
+    dest: /opt/librespot-java/config.toml
+    regexp: '(?<=preferredAudioQuality\s=\s\")[A-Z]*_[0-9]*'
+    replace: "{{ librespot_java_player_preferred_audio_qualitn }}"
+  notify:
+    - restart librespot-java
+
+- name: configure player normalization
+  replace:
+    dest: /opt/librespot-java/config.toml
+    regexp: '(?<=enableNormalisation\s=\s)[A-z]*'
+    replace: "{{ librespot_java_player_normalisation_enabln }}"
+  notify:
+    - restart librespot-java
+
+- name: configure player normalization pregain
+  replace:
+    dest: /opt/librespot-java/config.toml
+    regexp: '(?<=normalisationPregain\s=\s)[0-9]*.[0-9]*'
+    replace: "{{ librespot_java_player_normalisation_pregain }}"
+  notify:
+    - restart librespot-java
+
+- name: configure player initial volume
+  replace:
+    dest: /opt/librespot-java/config.toml
+    regexp: '(?<=initialVolume\s=\s)[0-9]*'
+    replace: "{{ librespot_java_player_initial_volumn }}"
+  notify:
+    - restart librespot-java
+
+- name: configure player log available mixers
+  replace:
+    dest: /opt/librespot-java/config.toml
+    regexp: '(?<=logAvailableMixers\s=\s)[A-z]*'
+    replace: "{{ librespot_java_player_log_available_mixern }}"
+  notify:
+    - restart librespot-java
+
+- name: configure player log mxixer search keywords
+  replace:
+    dest: /opt/librespot-java/config.toml
+    regexp: '(?<=mixerSearchKeywords\s=\s\")[A-z]*'
+    replace: "{{ librespot_java_player_mixer_search_keywordn }}"
+  notify:
+    - restart librespot-java
+
+- name: configure player loading state
+  replace:
+    dest: /opt/librespot-java/config.toml
+    regexp: '(?<=enableLoadingState\s=\s)[A-z]*'
+    replace: "{{ librespot_java_player_enable_loading_statn }}"
+  notify:
+    - restart librespot-java
+
+- name: configure playertracks use cdn
+  replace:
+    dest: /opt/librespot-java/config.toml
+    regexp: '(?<=^useCdn\s=\s)[A-z]*\s#\sUse\sCDN\sto\sdownload\stracks'
+    replace: "{{ librespot_java_playertracks_usecdn }}"
+  notify:
+    - restart librespot-java
+
+- name: configure player episodes use cdn
+  replace:
+    dest: /opt/librespot-java/config.toml
+    regexp: '(?<=^useCdn\s=\s)[A-z]*\s#\sUse\sCDN\sto\sdownload\sepisodes'
+    replace: "{{ librespot_java_player_episodes_usecdn }}"
+  notify:
+    - restart librespot-java

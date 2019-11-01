@@ -1,0 +1,67 @@
+---
+
+- name: check out librespot repository
+  git:
+    repo: https://github.com/librespot-org/librespot.git
+    dest: /tmp/librespot
+    version: dev
+  become: yes
+  become_user: "{{ lookup('env','USER') }}"
+  delegate_to: 127.0.0.1
+
+- name: build librespot
+  shell: "cd /tmp/librespot ; cargo build --release"
+  become: yes
+  become_user: "{{ lookup('env','USER') }}"
+  delegate_to: 127.0.0.1
+
+- name: ensure group "librespot" exists
+  group:
+    name: librespot
+    state: present
+    system: yes
+
+- name: add the user "librespot"
+  user:
+    name: librespot
+    comment: "User for librespot"
+    groups: librespot,audio
+    system: yes
+    create_home: no
+
+- name: creates directory for librespot
+  file:
+    dest: /opt/librespot
+    state: directory
+    owner: librespot
+    group: librespot
+
+- name: copy librespot artifact
+  copy:
+    src={{ item.src }}
+    dest={{ item.dest }}
+    owner={{ item.owner }}
+    group={{ item.group }}
+    mode={{ item.mode }}
+  with_items:
+    - {src: "/tmp/librespot/target/release/librespot",
+       dest: "/usr/bin/librespot",
+       owner: "librespot",
+       group: "librespot",
+       mode: "0774"}
+
+- name: copy service script
+  template:
+    src={{ item.src }}
+    dest={{ item.dest }}
+    owner={{ item.owner }}
+    group={{ item.group }}
+    mode={{ item.mode }}
+  with_items:
+    - { src: "librespot/librespot.service.j2",
+        dest: "/lib/systemd/system/librespot.service",
+        owner: "root",
+        group: "root",
+        mode: "0644"}
+  notify:
+    - restart librespot

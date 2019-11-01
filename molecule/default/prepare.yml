@@ -1,0 +1,12 @@
+---
+
+- name: Prepare
+  hosts: all
+  gather_facts: false
+  become: true
+  tasks:
+    - name: remove unneeded arm64 architecture
+      shell: dpkg --remove-architecture arm64
+
+    - name: install required armhf architecture
+      shell: dpkg --add-architecture armhf

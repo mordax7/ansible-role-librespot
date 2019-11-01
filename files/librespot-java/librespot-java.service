@@ -1,0 +1,15 @@
+[Unit]
+Description=librespot-java
+After=network.target
+
+[Service]
+User=librespot
+Group=librespot
+Restart=always
+RestartSec=10
+PermissionsStartOnly=true
+WorkingDirectory=/opt/librespot-java
+ExecStart=/usr/bin/java -jar librespot-core-jar-with-dependencies.jar
+
+[Install]
+WantedBy=multi-user.target

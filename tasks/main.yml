@@ -1,0 +1,23 @@
+---
+
+- import_tasks: install-raspotify.yml
+  tags:
+    - install
+  when: librespot_installation_type == "raspotify"
+
+- import_tasks: install-librespot-java.yml
+  tags:
+    - install
+  when: librespot_installation_type == "librespot-java"
+
+- import_tasks: install-librespot.yml
+  tags:
+    - install
+  when: librespot_installation_type == "librespot"
+
+# can't test this feature since the vm missing most of the features
+- import_tasks: hifiberry.yml
+  when: raspotify_enable_hifiberry == "true"
+  tags:
+    - hifiberry
+    - notest

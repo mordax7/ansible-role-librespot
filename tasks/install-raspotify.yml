@@ -1,0 +1,59 @@
+---
+
+- name: check out raspotify repository
+  git:
+    repo: https://github.com/dtcooper/raspotify.git
+    dest: /tmp/raspotify
+    version: master
+  become: yes
+  become_user: "{{ lookup('env','USER') }}"
+  delegate_to: 127.0.0.1
+
+- name: build raspotify
+  make:
+    chdir: /tmp/raspotify
+  become: yes
+  become_user: "{{ lookup('env','USER') }}"
+  delegate_to: 127.0.0.1
+
+- name: find the correct name of the debian package
+  find:
+    paths: /tmp/raspotify
+    patterns: '*.deb'
+  register: raspotify_debian_package_name
+  become: yes
+  become_user: "{{ lookup('env','USER') }}"
+  delegate_to: 127.0.0.1
+
+- name: copy raspotify artifact
+  copy:
+    src: "{{ item.path }}"
+    dest: "/tmp/raspotify.deb"
+    owner: "root"
+    group: "root"
+    mode: "0664"
+  with_items: "{{ raspotify_debian_package_name.files }}"
+  notify:
+    - restart raspotify
+
+- name: install raspotify
+  apt: deb="/tmp/raspotify.deb"
+
+- name: clean artifact path
+  file:
+    path: /tmp/raspotify.deb
+    state: absent
+
+- name: configure raspotify
+  template:
+    src: raspotify/raspotify.j2
+    dest: /etc/default/raspotify
+    owner: raspotify
+    group: raspotify
+    mode: 0600
+  when:
+    - raspotify_device_name is defined
+    - raspotify_bitrate is defined
+    - raspotify_volume is defined
+  notify:
+    - restart raspotify

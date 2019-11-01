@@ -1,0 +1,20 @@
+[Unit]
+Description=Librespot
+After=network.target
+
+[Service]
+User=librespot
+Group=librespot
+Restart=always
+RestartSec=10
+PermissionsStartOnly=true
+ExecStartPre=/bin/mkdir -m 0755 -p /var/cache/librespot ; /bin/chown librespot:librespot /var/cache/librespot
+Environment="DEVICE_NAME=librespot (%H)"
+Environment="BITRATE=160"
+Environment="CACHE_ARGS=--disable-audio-cache"
+Environment="VOLUME_ARGS=--enable-volume-normalisation --linear-volume --initial-volume=100"
+Environment="BACKEND_ARGS=--backend alsa"
+ExecStart=/usr/bin/librespot --name {{ librespot_device_name }} {{ librespot_args }} --bitrate {{ librespot_bitrate }} {{ librespot_cache_args }} {{ librespot_volume }} {{ librespot_options }}
+
+[Install]
+WantedBy=multi-user.target

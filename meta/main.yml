@@ -1,0 +1,27 @@
+---
+
+galaxy_info:
+  role_name: Librespot
+  author: xMordax
+  description: Librespot automated installation
+  license: "license (BSD, MIT)"
+  min_ansible_version: 2.4
+  platforms:
+    - name: Debian
+      versions:
+        - buster
+  galaxy_tags:
+    - librespot
+    - raspotify
+    - java
+    - hifiberry
+    - music
+    - song
+    - raspberry
+    - pi
+
+dependencies:
+  - src: geerlingguy.java
+    version: 1.9.6
+    name: geerlingguy.java
+    when: librespot_installation_type == "librespot-java"

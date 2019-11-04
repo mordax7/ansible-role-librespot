@@ -1,6 +1,6 @@
 ---
 
-librespot_installation_type: librespot # type of installation of librespot: librespot(rust), librespot-java, raspotify
+librespot_installation_type: librespot-java # type of installation of librespot: librespot(rust), librespot-java, raspotify
 raspotify_enable_hifiberry: "false" # boolean, if you got a hifiberry device
 
 # raspotify

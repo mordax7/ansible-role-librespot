@@ -40,7 +40,7 @@ OPTIONS="{{ raspotify_cache_args }}"
 # arguments here if you'd like, but these should be fine.
 #VOLUME_ARGS="--enable-volume-normalisation --linear-volume --initial-volume=100"
 {% if raspotify_volume %}
-VOLUME_ARGS="--enable-volume-normalisation --linear-volume --initial-volume={{ raspotify_volume }}"
+VOLUME_ARGS="{{ raspotify_volume }}"
 {% endif %}
 
 # Backend could be set to pipe here, but it's for very advanced use cases of

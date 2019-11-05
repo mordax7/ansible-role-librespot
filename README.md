@@ -1,8 +1,8 @@
 Role Name: Librespot
 =========
 
-Installation and configuration of Librespot client. Was mostly meant to run on a Raspberry PI but should also work on
-other devices.
+Installation and configuration of Librespot client on arm64 and armhf based systems that support systemd. This role also
+includes the configuration of a [Hifiberry](https://www.hifiberry.com/shop/boards/hifiberry-dac-rtc/) device.
 
 Requirements
 ------------
@@ -19,16 +19,16 @@ Role Variables
 --------------
 Variables to define type of installation:
 ```
-librespot_installation_type: librespot-java # type of installation of librespot: librespot(rust), librespot-java, raspotify
+librespot_installation_type: librespot # type of installation of librespot: librespot(rust), librespot-java, raspotify
 raspotify_enable_hifiberry: "false" # boolean, if you got a hifiberry device
 ```
 Variables for the ```raspotify``` type of installation:
 ```
 raspotify_device_name: "{{ ansible_hostname }}" # device name on Spotify Connect
-raspotify_bitrate: 320 # bitrate, one of 96 (low quality), 160 (default quality), or 320 (high quality)
+raspotify_bitrate: "320" # bitrate, one of 96 (low quality), 160 (default quality), or 320 (high quality)
 raspotify_options: "--zeroconf-port 40995" # additional command line arguments for librespot can be set below.
 raspotify_cache_args: "" # use /var/cache/librespot for cache location if needed so. Cache is disabled by default
-raspotify_volume: 100 # default volume when connecting to the client
+raspotify_volume: "--enable-volume-normalisation --linear-volume --initial-volume=100" # default volume when connecting to the client
 raspotify_args: "--backend alsa --device default" # backend could be set to pipe here, but it's for very advanced use cases of
 ```
 Variables for the native ```librespot``` type of installation:
@@ -80,7 +80,7 @@ the projects.
 
 Depending of the type of installation take a look at the following:
 * [Librespot Dependencies](https://github.com/librespot-org/librespot#building)
-* [Librespot-java Dependencies](https://github.com/librespot-org/librespot-java#build-it)
+* [Librespot-Java Dependencies](https://github.com/librespot-org/librespot-java#build-it)
 * [Raspotify Dependencies](https://github.com/dtcooper/raspotify#building-the-package-yourself)
 
 Example Playbook
@@ -89,6 +89,12 @@ Example Playbook
     - hosts: all
       roles:
         - role: xmordax.librespot
+
+Features
+-------
+
+If you think the role is missing any features please create a ticket but also feel free to create a PR to add it 
+yourself.
 
 License
 -------

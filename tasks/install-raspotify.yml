@@ -4,7 +4,7 @@
   git:
     repo: https://github.com/dtcooper/raspotify.git
     dest: /tmp/raspotify
-    version: master
+    version: "{{ raspotify_git_branch }}"
   become: yes
   become_user: "{{ lookup('env','USER') }}"
   delegate_to: 127.0.0.1

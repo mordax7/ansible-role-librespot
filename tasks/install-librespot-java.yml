@@ -4,7 +4,7 @@
   git:
     repo: https://github.com/librespot-org/librespot-java.git
     dest: /tmp/librespot-java
-    version: master
+    version: "{{ librespot_java_git_branch }}"
   become: yes
   become_user: "{{ lookup('env','USER') }}"
   delegate_to: 127.0.0.1

@@ -30,7 +30,8 @@ raspotify_options: "--zeroconf-port 40995" # additional command line arguments f
 raspotify_cache_args: "" # use /var/cache/librespot for cache location if needed so. Cache is disabled by default
 raspotify_volume: "--enable-volume-normalisation --linear-volume --initial-volume=100" # default volume when connecting to the client
 raspotify_args: "--backend alsa --device default" # backend could be set to pipe here, but it's for very advanced use cases of
-raspotify_git_branch: "master" # git branch from which you want to build from
+raspotify_git_branch: "master" # git branch/commit from which you want to build it from
+raspotify_librespot_git_branch: "dev" # git branch from librespot that you want to build it from, leave empty if you want to use default one
 ```
 Variables for the native ```librespot``` type of installation:
 ```
@@ -40,7 +41,7 @@ librespot_options: "--zeroconf-port 40995" # additional command line arguments f
 librespot_cache_args: "--disable-audio-cache" # use /var/cache/librespot for cache location if needed so. Cache is disabled by default
 librespot_volume: "--enable-volume-normalisation --linear-volume --initial-volume=100" # default volume when connecting to the client
 librespot_args: "--backend alsa" # backend could be set to pipe here, but it's for very advanced use cases of
-librespot_git_branch: "dev" # git branch from which you want to build from
+librespot_git_branch: "dev" # git branch/commit from which you want to build it from
 ```
 Variables for the native ```librespot-java``` type of installation:
 ```
@@ -67,7 +68,7 @@ librespot_java_player_mixer_search_keywords: "plughw" # keywords to pick a mixer
 librespot_java_player_enable_loading_state: "true" # enable loading state
 librespot_java_playertracks_usecdn: "true" # use cdn for playertracks
 librespot_java_player_episodes_usecdn: "true" # use cdn for episodes
-librespot_java_git_branch: "master" # git branch from which you want to build from
+librespot_java_git_branch: "master" # git branch/commit from which you want to build it from
 ```
 
 Dependencies

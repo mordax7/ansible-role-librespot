@@ -9,6 +9,16 @@
   become_user: "{{ lookup('env','USER') }}"
   delegate_to: 127.0.0.1
 
+- name: check out librespot repository
+  git:
+    repo: https://github.com/librespot-org/librespot.git
+    dest: /tmp/raspotify/librespot
+    version: "{{ raspotify_librespot_git_branch }}"
+  become: yes
+  become_user: "{{ lookup('env','USER') }}"
+  delegate_to: 127.0.0.1
+  when: raspotify_librespot_git_branch is defined
+
 - name: build raspotify
   make:
     chdir: /tmp/raspotify

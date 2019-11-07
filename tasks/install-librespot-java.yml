@@ -1,5 +1,16 @@
 ---
 
+# this step is not tested for the purpose of speeding up the tests
+- name: make sure that the build directory does not exist
+  file:
+    path: /tmp/librespot-java
+    state: absent
+  become: yes
+  become_user: "{{ lookup('env','USER') }}"
+  delegate_to: 127.0.0.1
+  tags:
+    - notest
+
 - name: check out librespot-java repository
   git:
     repo: https://github.com/librespot-org/librespot-java.git

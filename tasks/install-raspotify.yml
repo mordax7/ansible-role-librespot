@@ -1,24 +1,5 @@
 ---
 
-- name: make sure that the librespot directory does not exist
-  file:
-    path: /tmp/raspotify/librespot
-    state: absent
-  become: yes
-  become_user: "{{ lookup('env','USER') }}"
-  delegate_to: 127.0.0.1
-
-# this step is not tested for the purpose of speeding up the tests
-- name: make sure that the build directory does not exist
-  file:
-    path: /tmp/raspotify
-    state: absent
-  become: yes
-  become_user: "{{ lookup('env','USER') }}"
-  delegate_to: 127.0.0.1
-  tags:
-    - notest
-
 - name: check out raspotify repository
   git:
     repo: https://github.com/dtcooper/raspotify.git
@@ -64,6 +45,25 @@
   with_items: "{{ raspotify_debian_package_name.files }}"
   notify:
     - restart raspotify
+
+- name: cleanup librespot source directory
+  file:
+    path: /tmp/raspotify/librespot
+    state: absent
+  become: yes
+  become_user: "{{ lookup('env','USER') }}"
+  delegate_to: 127.0.0.1
+
+# this step is not tested for the purpose of speeding up the tests
+- name: cleanup build directory
+  file:
+    path: /tmp/raspotify
+    state: absent
+  become: yes
+  become_user: "{{ lookup('env','USER') }}"
+  delegate_to: 127.0.0.1
+  tags:
+    - notest
 
 - name: install raspotify
   apt: deb="/tmp/raspotify.deb"

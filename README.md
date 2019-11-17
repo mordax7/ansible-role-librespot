@@ -123,7 +123,7 @@ keep this guide simple.
 
 #### Important
 Make sure to first read the [dependencies](https://github.com/xMordax/ansible-role-librespot#dependencies) section of
-this project. If you will ever any issues with the deployment, please first refer to the official [ Ansible Documentation](https://docs.ansible.com/ansible/latest/index.html)
+this project. If you will ever have any issues with the deployment, please first refer to the official [ Ansible Documentation](https://docs.ansible.com/ansible/latest/index.html)
 and try solving the problems by yourself before creating a ticket.
 
 Features

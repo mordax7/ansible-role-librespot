@@ -74,10 +74,6 @@ librespot_java_git_branch: "master" # git branch/commit from which you want to b
 Dependencies
 ------------
 
-Like mentioned previously the only dependencies the roles have is if you want to have the java type of installation this
-will require you a java role. 
-
-#### Important
 The roles will build each of the applications from the sources on your source machine before pushing the artifact to 
 your target system. Therefore it is required that your source machine matches all the required dependencies for building
 the projects.
@@ -93,6 +89,42 @@ Example Playbook
     - hosts: all
       roles:
         - role: xmordax.librespot
+
+Ansible Guide
+-------------
+As request here a quick guide for Ansible to get this project running.
+
+1. [Install Ansible on your local machine.](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
+2. Create a empty working directory.
+3. Change directory into your newly created directory and execute the following command: ```ansible-galaxy install xmordax.librespot -p ./roles```.
+This should have created a folder called roles which includes the code from this repository
+4. Create two new files in the root of your working directory: ```playbook.yml``` and ```inventory```.
+5. In the ```inventory``` file you need to write the configuration on how to connect to your target system, in my
+example I will use SSH. If you want to use any other kind of authentication, please check Ansible Documentation on how
+to configure your inventory file.
+    ```
+    [server]
+    hostname ansible_host=<IP_OF_TARGET_MACHINE> ansible_user=<USER_ON_TARGET_MACHINE> ansible_ssh_private_key_file=<PATH_TO_SSH_KEY>
+    ``` 
+6. The ```playbook.yml``` file is used for configuring your deployment, in my case I will do just basic configuration to
+keep this guide simple.
+    ```
+    - hosts: server
+      become: true
+      roles:
+        - librespot
+    
+      vars:
+        # Raspotify configuration
+        librespot_installation_type: "librespot"
+        raspotify_device_name: "home-spotify-connect"
+    ```
+7. Deploy with the following command: ```ansible-playbook playbook.yml -i inventory```.
+
+#### Important
+Make sure to first read the [dependencies](https://github.com/xMordax/ansible-role-librespot#dependencies) section of
+this project. If you will ever any issues with the deployment, please first refer to the official [ Ansible Documentation](https://docs.ansible.com/ansible/latest/index.html)
+and try solving the problems by yourself before creating a ticket.
 
 Features
 -------

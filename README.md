@@ -2,7 +2,8 @@ Role Name: Librespot
 =========
 
 Installation and configuration of Librespot client on arm64 and armhf based systems that support systemd. This role also
-includes the configuration of a [Hifiberry](https://www.hifiberry.com/shop/boards/hifiberry-dac-rtc/) device.
+includes the configuration of a [Hifiberry](https://www.hifiberry.com/shop/boards/hifiberry-dac-rtc/) device. If you
+like any feature is missing, dont hesitate to create a ticket but also feel free to create a PR to add it yourself.
 
 Requirements
 ------------
@@ -125,12 +126,6 @@ keep this guide simple.
 Make sure to first read the [dependencies](https://github.com/xMordax/ansible-role-librespot#dependencies) section of
 this project. If you will ever have any issues with the deployment, please first refer to the official [ Ansible Documentation](https://docs.ansible.com/ansible/latest/index.html)
 and try solving the problems by yourself before creating a ticket.
-
-Features
--------
-
-If you think the role is missing any features please create a ticket but also feel free to create a PR to add it 
-yourself.
 
 License
 -------

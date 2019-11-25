@@ -1,6 +1,6 @@
 ---
 
-librespot_installation_type: raspotify # type of installation of librespot: librespot(rust), librespot-java, raspotify
+librespot_installation_type: librespot-java # type of installation of librespot: librespot(rust), librespot-java, raspotify
 raspotify_enable_hifiberry: "false" # boolean, if you got a hifiberry device
 
 # raspotify
@@ -24,26 +24,30 @@ librespot_git_branch: "dev" # git branch/commit from which you want to build it 
 
 # librespot-java
 librespot_java_device_name: "{{ ansible_hostname }}" # device name on Spotify Connect
-librespot_java_device: "Computer" # device type
-librespot_java_auth_strategy: "ZEROCONF" # authentication strategy
-librespot_java_auth_username: "" # optional username
-librespot_java_auth_password: "" # optional password
-librespot_java_auth_blob: "" # optional blob
-librespot_java_zeroconf_port: 40995 # dedicated port running, "-1" for random port
-librespot_java_zeroconf_listen_all: "true" # boolen for wildcard interfaces
-librespot_java_zeroconf_interfaces: "" # define interfaces
+librespot_java_device: "Computer" # device type (COMPUTER, TABLET, SMARTPHONE, SPEAKER, TV, AVR, STB, AUDIO_DONGLE, GAME_CONSOLE, CAST_VIDEO, CAST_AUDIO, AUTOMOBILE, WEARABLE, UNKNOWN_SPOTIFY, CAR_THING, UNKNOWN)
+librespot_java_preferred_locale: "Computer" # preferred locale
+librespot_java_auth_strategy: "ZEROCONF" # strategy (USER_PASS, ZEROCONF, BLOB, FACEBOOK)
+librespot_java_auth_username: "" # spotify username (BLOB, USER_PASS only)
+librespot_java_auth_password: "" # spotify password (USER_PASS only)
+librespot_java_auth_blob: "" # spotify authentication blob (BLOB only)
+librespot_java_zeroconf_port: 40995 # listen on this port (`-1` for random)
+librespot_java_zeroconf_listen_all: "true" # listen on all interfaces (overrides `zeroconf.interfaces`)
+librespot_java_zeroconf_interfaces: "" # listen on these interfaces (comma separated list of names)
 librespot_java_cache_enabled: "true" # enable cacheing
 librespot_java_cache_dir: "./cache" # directory for caching
 librespot_java_cache_do_clean_up: "true" # periodical clean up of cache
 librespot_java_preload_enabled: "true" # preload songs
-librespot_java_player_autoplay_enabled: "true" # enable autoplay feature
-librespot_java_player_preferred_audio_quality: "VORBIS_320" # bitrate, one of 96 (low quality), 160 (default quality), or 320 (high quality)
-librespot_java_player_normalisation_enable: "true" # normalisation for songs
-librespot_java_player_normalisation_pregain: 0.0 # rate of the normalisation
-librespot_java_player_initial_volume: 65536 # inital volume when connecting to the client
-librespot_java_player_log_available_mixers: "false" # list all available mixers
-librespot_java_player_mixer_search_keywords: "plughw" # keywords to pick a mixer
-librespot_java_player_enable_loading_state: "true" # enable loading state
-librespot_java_playertracks_usecdn: "true" # use cdn for playertracks
-librespot_java_player_episodes_usecdn: "true" # use cdn for episodes
+librespot_java_time_synchronization_method: "NTP" # time synchronization method (NTP, PING, MELODY, MANUAL)
+librespot_java_time_manual_correction: 0 # manual time correction in millis
+librespot_java_player_autoplay_enabled: "true" # autoplay similar songs when your music ends
+librespot_java_player_preferred_audio_quality: "VORBIS_320" # preferred audio quality (VORBIS_96, VORBIS_160, VORBIS_320)
+librespot_java_player_normalisation_enable: "true" # whether to apply the Spotify loudness normalisation
+librespot_java_player_normalisation_pregain: 0.0 # normalisation pregain
+librespot_java_player_initial_volume: 65536 # initial volume (0-65536)
+librespot_java_player_log_available_mixers: "false" # log available mixers
+librespot_java_player_mixer_search_keywords: "plughw" # mixer/backend search keywords (semicolon separated)
+librespot_java_player_crossfade_duration: 0 # crossfade overlap time (in milliseconds)
+librespot_java_timer_output: "MIXER" # audio output device (MIXER, PIPE, STDOUT)
+librespot_java_player_release_line_delay: 20 # release mixer line after set delay (in seconds)
+librespot_java_player_pipe: "" # output raw (signed) PCM to this file (`player.output` must be PIPE)
 librespot_java_git_branch: "master" # git branch/commit from which you want to build it from

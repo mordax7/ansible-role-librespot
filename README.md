@@ -3,7 +3,7 @@ Role Name: Librespot
 
 Installation and configuration of Librespot client on arm64 and armhf based systems that support systemd. This role also
 includes the configuration of a [Hifiberry](https://www.hifiberry.com/shop/boards/hifiberry-dac-rtc/) device. If you
-like any feature is missing, dont hesitate to create a ticket but also feel free to create a PR to add it yourself.
+would like to see any new features, dont hesitate to create a new ticket or feel free to create a PR to add it yourself.
 
 Requirements
 ------------

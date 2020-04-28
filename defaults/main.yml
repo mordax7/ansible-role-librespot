@@ -25,7 +25,7 @@ librespot_git_branch: "dev" # git branch/commit from which you want to build it 
 # librespot-java
 librespot_java_device_name: "{{ ansible_hostname }}" # device name on Spotify Connect
 librespot_java_device: "Computer" # device type (COMPUTER, TABLET, SMARTPHONE, SPEAKER, TV, AVR, STB, AUDIO_DONGLE, GAME_CONSOLE, CAST_VIDEO, CAST_AUDIO, AUTOMOBILE, WEARABLE, UNKNOWN_SPOTIFY, CAR_THING, UNKNOWN)
-librespot_java_preferred_locale: "Computer" # preferred locale
+librespot_java_preferred_locale: "DE" # preferred locale
 librespot_java_auth_strategy: "ZEROCONF" # strategy (USER_PASS, ZEROCONF, BLOB, FACEBOOK)
 librespot_java_auth_username: "" # spotify username (BLOB, USER_PASS only)
 librespot_java_auth_password: "" # spotify password (USER_PASS only)
